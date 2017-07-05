@@ -1,0 +1,12 @@
+{
+  "name": "etherep",
+  "version": "0.0.1",
+  "description": "Ethereum reputation by address",
+  "main": "index.js",
+  "repository": "https://github.com/gointo/etherep",
+  "author": "GoInto, LLC",
+  "license": "Apache",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  }
+}

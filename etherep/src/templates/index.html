@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>etherep{{#title}} - Ethereum reputiation by address{{/title}}</title>
+        <meta name="description" content="Ethereum reputiation by address">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen|Slabo+27px">
+        <link rel="stylesheet" href="/css/etherep.css">
+    </head>
+    <body>
+        <header class="hero">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">ehterep</h1>
+                    <h2 class="subtitle">Simple Ethereum reputation by address</h2>
+                </div>
+            </div>
+        </header>
+        <div id="app"></div>
+        <div id="modal-container"></div>
+        <script src="/js/web3.min.js"></script>
+        <script src="/js/mustache.js"></script>
+        <script src="/js/etherep.js"></script>
+        <script id="tmplMain" type="text/html">
+            <section class="section" id="lookup">
+                <div class="container">
+                    <h2 class="title is-2">Lookup</h2>
+
+                    <p class="subtitle is-5">Look up the cumulative rating for an address</p>
+
+                    <form onsubmit="submitLookup(this); return false;">
+
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input" type="text" placeholder="0x0123deadbeef...">
+                            </p>
+                            <p class="control">
+                                <button type="submit" class="button is-info has-icons-left">
+                                    <i class="fa fa-search"></i>
+                                    Lookup
+                                </button>
+                            </p>
+                        </div>
+
+                    </form>
+
+                    <p id="lookupScore" class="hide">
+                    {{ address }} has a cumulative score of <span class="score">{{ score }}</span> with {{ count }} ratings.
+                    </p>
+                </div>
+            </section>
+
+            <section class="section" id="rate">
+                <div class="container">
+                    <h2 class="title is-2">Rate</h2>
+
+                    <p class="subtitle is-5">Rate an address on a scale of -5 to 5 on how well your transaction(s) went with them.</p>
+
+                    <div class="field has-addons rating-gradient">
+                        <p class="control">
+                            <input class="input" type="text" placeholder="0x0123deadbeef...">
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-5)">-5</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-4)">-4</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-3)">-3</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(-2)">-2</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(-1)">-1</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-info" onclick="selectRating(0)">0</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(1)">1</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(2)">2</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(3)">3</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(4)">4</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(5)">5</button>
+                        </p>
+                    </div>
+
+                    <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup></p>
+                </div>
+            </section>
+            <section class="section" id="rate">
+                <div class="container">
+                    <h2 class="title is-2">How does it work?</h2>
+
+                    <p>Ratings are given from one address to another on a scale of -5(awful) to 5(great).  Users can rate an address for whatever reason they want.  Maybe they completed a transaction with another Ethereum user, or they just want to let people know how awesome or shifty their friends and enemies are.</p>
+
+                    <p>Ratings are also weighted according to the score of the rater.  Addresses with a good rating will have a higher impact than those with no or negative rating.</p>
+
+                    <p>The idea here is that this system can be used to compliment any number of services or simple transactions on the <a href="https://www.ethereum.org/" onclick="window.open(this.href); return false;">Ethereum network</a>. So there's no limiting factor as to <em>why</em> someone might use this service.  You are welcome and encouraged to connect to our contract to get/give ratings for your own dapps as well.  We also have a <a href="#">RESTful API</a> available for regular old Web apps.</p>
+
+                    <h3 class="title is-3">What prevents bots and spam?</h3>
+
+                    <p>As of right now, ratings are limited to one rating from one address to another once per day.  A fee of &Xi;{{ fee }} is also imposed on top of the Ethereum network fee to try and dissuade large amounts of ratings.  This fee may be adjusted depending on the level of spam going on, but ideally this will stay pretty low to under $0.10 USD.</p>
+
+                    <h3 class="title is-3">Can I see the underlying contracts?</h3>
+
+                    <p>Absolutely!  Right now we have 2 contracts.  <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/etherep.sol">Etherep</a>, which handles calculation, formatting, and enforces some level of sanity to ratings.  This is the contract that users will interact with by using our dapp.</p>
+
+                    <p>We also have a secondary contract, <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/ratingstore.sol">RatingStore</a> which handles storage of this underlying data.  Only our main contract can currently interact with it.  The idea of separating these is that Etherep is much more likely to be upgraded and it would be unfortunate to have to reset everyone's ratings.  That's the hope, anyway.</p>
+
+                    <p>Etherep should still be considered BETA software.  Data may be wiped at any point, and our contract addresses may change.  Check back here for the current addresses.  If you find any bugs, please let us know at <a href="mailto:contact@gointo.software">contact@gointo.software</a></p>
+                </div>
+            </section>
+        </script>
+        <script id="tmplNotice" type="text/html">
+            <div class="modal is-active">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">{{ title }}</p>
+                        <button class="delete" onclick="etherep.closeModals();"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <p>{{ content }}</p>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-primary" onclick="etherep.closeModals();">Close</button>
+                    </footer>
+                </div>
+            </div>
+        </script>
+        <script>
+            (function() {
+                // Init
+                window.etherep = new Etherep(byid('app'));
+            })();
+        </script>
+    </body>
+</html>

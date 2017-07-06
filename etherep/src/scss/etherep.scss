@@ -1,0 +1,89 @@
+$title-font:            "Slabo 27px", sans-serif;
+$main-font:             "Oxygen", serif;
+$primary-color:         #ceffe8;
+$secondary-color:       #8ce6bc;
+$complimentary-color:   #ffd5ce;
+$body-background:       #fff;
+
+@import "bulma/sass/utilities/_all";
+@import "bulma/sass/base/_all";
+@import "bulma/sass/layout/hero";
+@import "bulma/sass/components/modal";
+/*@import "bulma/sass/grid/columns";
+@import "bulma/sass/elements/box";
+@import "bulma/sass/elements/notification";*/
+@import "bulma/sass/elements/title";
+@import "bulma/sass/elements/button";
+@import "bulma/sass/elements/form";
+@import "bulma/sass/elements/other";
+
+section {
+    margin-bottom: 2rem;
+    .container {
+        h3 {
+            margin-top: 2rem;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.rating-gradient {
+
+    p {
+        .button {
+            width: 3rem;
+            color: #000;
+        }
+        .button:hover {
+            color: #fff;
+        }
+    }
+
+    p:nth-of-type(1) .button {
+        background: #FE8176;
+    }
+    p:nth-of-type(2) .button {
+        background: #F78F68;
+    }
+    p:nth-of-type(3) .button {
+        background: #F1A05A;
+    }
+    p:nth-of-type(4) .button {
+        background: #EBB44D;
+    }
+    p:nth-of-type(5) .button {
+        background: #E4CB40;
+    }
+    p:nth-of-type(6) .button {
+        background: #D8DE34;
+    }
+    p:nth-of-type(7) .button {
+        background: #B0D828;
+    }
+    p:nth-of-type(8) .button {
+        background: #86D11D;
+    }
+    p:nth-of-type(9) .button {
+        background: #5BCB13;
+    }
+    p:nth-of-type(10) .button {
+        background: #2FC509;
+    }
+    p:nth-of-type(11) .button {
+        background: #01BF00;
+    }
+
+}
+
+
+
+
+
+
+

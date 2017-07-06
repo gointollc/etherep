@@ -2,6 +2,7 @@ $main-font:             "Oxygen", serif;
 $primary-color:         #FF9F40;
 $secondary-color:       #FF6440;
 $complimentary-color:   #40AAFF;
+$complimentary-two-color: #404AFF;
 $body-background:       #FCDAB8;
 
 @import "bulma/sass/utilities/_all";
@@ -18,6 +19,14 @@ $body-background:       #FCDAB8;
 
 body {
     font-family: $main-font;
+}
+
+a, a:hover, a:active {
+    color: $complimentary-color;
+}
+
+a:visited {
+    color: $complimentary-two-color;
 }
 
 section {

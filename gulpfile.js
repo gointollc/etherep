@@ -7,12 +7,12 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 
 gulp.task('css', function() {
-  return gulp.src('ethmsg/web/static/src/sass/ethmsg.scss')
+  return gulp.src('etherep/src/scss/etherep.scss')
     .pipe(sass({
       includePaths: ['node_modules']
     }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest('ethmsg/web/static/dist/css'))
+    .pipe(gulp.dest('etherep/dist/css'))
 });
 
 gulp.task('deps', () => {
@@ -37,4 +37,11 @@ gulp.task('js', () => {
     .pipe(gulp.dest('etherep/dist/js'));
 });
 
-gulp.task('default', [ 'css', 'deps', 'js' ]);
+gulp.task('html', () => {
+    gulp.src([
+        'etherep/src/templates/index.html'
+    ])
+    .pipe(gulp.dest('etherep/dist/html/'))
+});
+
+gulp.task('default', [ 'css', 'deps', 'js', 'html' ]);

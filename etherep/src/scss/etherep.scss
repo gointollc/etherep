@@ -1,9 +1,8 @@
-$title-font:            "Slabo 27px", sans-serif;
 $main-font:             "Oxygen", serif;
-$primary-color:         #ceffe8;
-$secondary-color:       #8ce6bc;
-$complimentary-color:   #ffd5ce;
-$body-background:       #fff;
+$primary-color:         #FF9F40;
+$secondary-color:       #FF6440;
+$complimentary-color:   #40AAFF;
+$body-background:       #FCDAB8;
 
 @import "bulma/sass/utilities/_all";
 @import "bulma/sass/base/_all";
@@ -17,6 +16,10 @@ $body-background:       #fff;
 @import "bulma/sass/elements/form";
 @import "bulma/sass/elements/other";
 
+body {
+    font-family: $main-font;
+}
+
 section {
     margin-bottom: 2rem;
     .container {
@@ -26,6 +29,15 @@ section {
         p {
             margin-bottom: 1rem;
         }
+    }
+}
+
+header {
+    &.hero {
+        margin-bottom: 2rem;
+        background: $primary-color;
+        color: $complimentary-color;
+        font-weight: bold;
     }
 }
 

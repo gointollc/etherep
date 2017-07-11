@@ -30,14 +30,14 @@
 
                     <p class="subtitle is-5">Look up the cumulative rating for an address</p>
 
-                    <form onsubmit="submitLookup(this); return false;">
+                    <form id="lookup-form" onsubmit="submitLookup(this); return false;">
 
                         <div class="field has-addons">
                             <p class="control">
                                 <input class="input" name="address" type="text" placeholder="0x0123deadbeef...">
                             </p>
                             <p class="control">
-                                <button type="submit" class="button is-info has-icons-left">
+                                <button id="lookup-button" type="submit" class="button is-info has-icons-left">
                                     <i class="fa fa-search"></i>
                                     Lookup
                                 </button>
@@ -51,6 +51,7 @@
             </section>
 
             <section class="section" id="rate">
+                <div class="readOnlyOverlay ro"><p>To make any ratings, you need to use a Web3 compatible browser.</p></div>
                 <div class="container">
                     <h2 class="title is-2">Rate</h2>
 
@@ -100,7 +101,7 @@
                     <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup></p>
                 </div>
             </section>
-            <section class="section" id="rate">
+            <section class="section" id="faq">
                 <div class="container">
                     <h2 class="title is-2">How does it work?</h2>
 
@@ -142,11 +143,14 @@
             </div>
         </script>
         <script id="tmplLookupResults" type="text/html">
-            <article class="message"><div class="message-body">{{ address }} has a cumulative score of <span class="score">{{ score }}</span> with {{ count }} ratings.</div></article>
+            <article class="message"><div class="message-body">{{ address }} has a cumulative score of <span class="score {{ scoreClass }}">{{ score }}</span> with {{ count }} ratings.</div></article>
+        </script>
+        <script id="tmplLookupError" type="text/html">
+            <article class="message"><div class="notification is-danger">There was an unhandled error performing the lookup: {{ errorMessage }}</div></article>
         </script>
         <script id="tmplRatingResults" type="text/html">
             <article class="message">
-                <p class="message-body">{{ address }} has successfully been rated <span class="score">{{ score }}</span>.</p>
+                <p class="message-body">{{ address }} has successfully been rated <span class="score {{ scoreClass }}">{{ score }}</span>.</p>
                 <p class="small">Transaction: <a href="https://etherscan.io/tx/{{ transaction }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
             </article>
         </script>

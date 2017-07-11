@@ -5,14 +5,19 @@ $complimentary-color:   #40AAFF;
 $complimentary-two-color: #404AFF;
 $body-background:       #FCDAB8;
 
+$good:                  #23d160;
+$fair:                  #D8DE34;
+$bad:                   #F78F68;
+$badTransparent:        rgba(247, 143, 104, 0.9);
+
 @import "bulma/sass/utilities/_all";
 @import "bulma/sass/base/_all";
 @import "bulma/sass/layout/hero";
 @import "bulma/sass/components/modal";
 @import "bulma/sass/components/message";
 /*@import "bulma/sass/grid/columns";
-@import "bulma/sass/elements/box";
-@import "bulma/sass/elements/notification";*/
+@import "bulma/sass/elements/box";*/
+@import "bulma/sass/elements/notification";
 @import "bulma/sass/elements/title";
 @import "bulma/sass/elements/button";
 @import "bulma/sass/elements/form";
@@ -54,16 +59,43 @@ header {
     }
 }
 
-#lookupScore {
+#lookup-score {
     .message {
         .score {
             font-size: 200%;
             font-weight: bold;
+            &.good {
+                color: $good;
+            }
+            &.fair {
+                color: $fair;
+            }
+            &.bad {
+                color: $bad;
+            }
         }
     }
 }
 
-.hide {
+#rate {
+    .readOnlyOverlay {
+        position: absolute;
+        display: block;
+        background: $badTransparent;
+        height: 12rem;
+        width: 100%;
+        z-index: 5;
+        p {
+            margin-top: 4.5rem;
+            font-size: 150%;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+}
+
+.hide, .ro {
     display: none;
 }
 

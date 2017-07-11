@@ -87,7 +87,7 @@ class Etherep {
             if (typeof web3 == typeof undefined) {
                 console.warn("Attempting to create a connection to default RPC");
                 this.web3 = new Web3(new Web3.providers.HttpProvider(DEFAULT_PROVIDER));
-                this.readOnly = true;
+                this._setReadOnly(true);
             } else {
                 this.web3 = web3;
             }
@@ -138,7 +138,7 @@ class Etherep {
 
                                 else {
                                 
-                                    console.log("Got contract address: ", res);
+                                    console.log("Etherep contract address: ", res);
                                     that.address = res;
 
                                     // If we're read-only, we're done
@@ -270,6 +270,33 @@ class Etherep {
     }
 
     /**
+     * Set readOnly and render accordingly 
+     * @param {boolean} ro - readOnly setting
+     */
+    _setReadOnly(ro) {
+
+        // Set the var
+        this.readOnly = ro;
+
+        // Get the read only elements
+        var roEls = document.getElementsByClassName('ro');
+
+        // Figure out display setting
+        let display;
+        if (this.readOnly) {
+            display = "block";
+        } else {
+            display = "none";
+        }
+
+        // Set it
+        for (var i = 0; i < roEls.length; i++) {
+            roEls[i].style.display = "block";
+        }
+
+    }
+
+    /**
      * Close all modals
      */
     closeModals() {
@@ -315,26 +342,65 @@ class Etherep {
             return;
         }
 
+        let targetElement = byid('lookup-score');
+
+        // Show results element
+        targetElement.classList.remove('hide');
+        // Add loading effects
+        targetElement.classList.add('spinner');
+
+        let submitButton = byid('lookup-button');
+        // Signal loading
+        submitButton.classList.add('is-loading');
+
+        let lookupForm = byid('lookup-form');
+        // Reset any error status
+        lookupForm.elements['address'].classList.remove('is-danger');
+
         var that = this;
         this._web3Valid().then(function(res) {
-
-            let targetElement = byid('lookup-score');
-
-            targetElement.classList.remove('hide');
-            targetElement.classList.add('spinner');
             
             let rep = that.web3.eth.contract(ETHEREP_ABI).at(that.address);
             
             rep.getScoreAndCount.call(address, function(err, resp) {
-                
+
+                // Handle this in the catch block
+                if (err) throw err;
+
+                // Calculate single digit score
+                let score = parseFloat(resp[0]) / 100;
+
+                let scoreClass;
+                if (score >= -5 && score < -1) scoreClass = "bad";
+                else if (score >= -1 && score < 3) scoreClass = "fair";
+                else if (score >= 3) scoreClass = "good";
+                console.log("Score: ", score, " scoreClass: ", scoreClass);
+
+                // Render the element
                 that._render(targetElement, byid('tmplLookupResults').innerHTML, {
                     address: address,
-                    score: resp[0],
-                    count: resp[1]
+                    score: score,
+                    count: resp[1],
+                    scoreClass: scoreClass
                 });
 
                 targetElement.classList.remove('spinner');
+                submitButton.classList.remove('is-loading');
 
+            });
+
+        }).catch(function(err) {
+
+            // Reset all style
+            targetElement.classList.remove('spinner');
+            submitButton.classList.remove('is-loading');
+
+            // And signal error on the input
+            lookupForm.elements['address'].classList.add('is-danger');
+
+            // Render the element
+            that._render(targetElement, byid('tmplLookupError').innerHTML, {
+                errorMessage: err
             });
 
         });

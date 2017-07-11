@@ -9,6 +9,7 @@ $body-background:       #FCDAB8;
 @import "bulma/sass/base/_all";
 @import "bulma/sass/layout/hero";
 @import "bulma/sass/components/modal";
+@import "bulma/sass/components/message";
 /*@import "bulma/sass/grid/columns";
 @import "bulma/sass/elements/box";
 @import "bulma/sass/elements/notification";*/
@@ -31,6 +32,9 @@ a:visited {
 
 section {
     margin-bottom: 2rem;
+    .input {
+        width: 30rem;
+    }
     .container {
         h3 {
             margin-top: 2rem;
@@ -47,6 +51,15 @@ header {
         background: $primary-color;
         color: $complimentary-color;
         font-weight: bold;
+    }
+}
+
+#lookupScore {
+    .message {
+        .score {
+            font-size: 200%;
+            font-weight: bold;
+        }
     }
 }
 
@@ -102,9 +115,32 @@ header {
 
 }
 
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
+  background-color: #333;
 
+  border-radius: 100%;  
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+}
 
+@-webkit-keyframes sk-scaleout {
+  0% { -webkit-transform: scale(0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
 
-
-
-
+@keyframes sk-scaleout {
+  0% { 
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}

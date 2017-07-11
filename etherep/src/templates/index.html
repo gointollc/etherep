@@ -34,7 +34,7 @@
 
                         <div class="field has-addons">
                             <p class="control">
-                                <input class="input" type="text" placeholder="0x0123deadbeef...">
+                                <input class="input" name="address" type="text" placeholder="0x0123deadbeef...">
                             </p>
                             <p class="control">
                                 <button type="submit" class="button is-info has-icons-left">
@@ -46,9 +46,7 @@
 
                     </form>
 
-                    <p id="lookupScore" class="hide">
-                    {{ address }} has a cumulative score of <span class="score">{{ score }}</span> with {{ count }} ratings.
-                    </p>
+                    <p id="lookup-score" class="hide"></p>
                 </div>
             </section>
 
@@ -60,7 +58,7 @@
 
                     <div class="field has-addons rating-gradient">
                         <p class="control">
-                            <input class="input" type="text" placeholder="0x0123deadbeef...">
+                            <input class="input" id="rating-address" type="text" placeholder="0x0123deadbeef...">
                         </p>
                         <p class="control">
                             <button class="button is-danger" onclick="selectRating(-5)">-5</button>
@@ -96,6 +94,8 @@
                             <button class="button is-success" onclick="selectRating(5)">5</button>
                         </p>
                     </div>
+
+                    <p id="rating-results" class="hide"></p>
 
                     <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup></p>
                 </div>
@@ -141,10 +141,22 @@
                 </div>
             </div>
         </script>
+        <script id="tmplLookupResults" type="text/html">
+            <article class="message"><div class="message-body">{{ address }} has a cumulative score of <span class="score">{{ score }}</span> with {{ count }} ratings.</div></article>
+        </script>
+        <script id="tmplRatingResults" type="text/html">
+            <article class="message">
+                <p class="message-body">{{ address }} has successfully been rated <span class="score">{{ score }}</span>.</p>
+                <p class="small">Transaction: <a href="https://etherscan.io/tx/{{ transaction }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
+            </article>
+        </script>
         <script>
             (function() {
-                // Init
-                window.etherep = new Etherep(byid('app'));
+                window.addEventListener('load', function() {
+                    console.log('load');
+                    // Init
+                    window.etherep = new Etherep(byid('app'));
+                });
             })();
         </script>
     </body>

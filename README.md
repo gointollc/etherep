@@ -1,5 +1,5 @@
 # Etherep
-Simple Ethereum reputation by address
+A simple dapp that allows Ethereum users to rate other users/contracts by address on a scale of -5 to 5.
 
 ## Using Etherep
 

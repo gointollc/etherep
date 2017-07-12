@@ -1,6 +1,7 @@
 ///
 /// CONSTANTS
 ///
+const STATIC_ROOT = "";
 const DEFAULT_PROVIDER = "https://ropsten.infura.io/FDJajyHvjza2cZK85SZ6 ";
 const NETWORKS = ["3","9999"];
 const ETHEREP_FEE = 200000000000000;
@@ -237,11 +238,17 @@ class Etherep {
     _render(element, template, context) {
         return new Promise((resolve, reject) => {
 
+            // Get our defaults available to templates
+            let combinedContext = Object.assign(context, { 
+                static: STATIC_ROOT,
+                migrateAddress: MIGRATION_ADDR
+            });
+
             if (this._isTemplateUrl(template)) {
 
                 this._getTemplate(template).then(function(tmpl) {
                     
-                    element.innerHTML = Mustache.render(tmpl, context);
+                    element.innerHTML = Mustache.render(tmpl, combinedContext);
                     resolve();
 
                 }.bind(this)).catch(function(err) {
@@ -252,7 +259,7 @@ class Etherep {
 
             } else {
                 
-                element.innerHTML = Mustache.render(template, context);
+                element.innerHTML = Mustache.render(template, combinedContext);
                 resolve();
 
             }

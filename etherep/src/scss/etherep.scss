@@ -4,6 +4,11 @@ $secondary-color:       #FF6440;
 $complimentary-color:   #40AAFF;
 $complimentary-two-color: #404AFF;
 $body-background:       #FCDAB8;
+$code:                  #966FF7;
+$code-background:       #FDE7D0;
+$link:                  $primary-color;
+$link-invert:           #966FF7;
+$link-visited:          #6F8CF7;
 
 $good:                  #23d160;
 $fair:                  #D8DE34;
@@ -56,6 +61,21 @@ header {
         background: $primary-color;
         color: $complimentary-color;
         font-weight: bold;
+    }
+}
+
+footer {
+    text-align: center;
+    font-size: 75%;
+}
+
+pre {
+    code {
+        display: block;
+        padding: 1rem;
+        overflow-x: scroll;
+        color: $code;
+        background: $code-background;
     }
 }
 

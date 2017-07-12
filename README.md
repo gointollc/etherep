@@ -3,7 +3,7 @@ A simple dapp that allows Ethereum users to rate other users/contracts by addres
 
 ## Using Etherep
 
-The easiest way to use Etherep is at the Web site at [etherep.com](https://www.etherep.com).  If you prefer to run it locally, you can [download a release](releases) and open `index.html` in the `dist` directory with a browser of your choice.
+The easiest way to use Etherep is at the Web site at [etherep.com](https://www.etherep.com).  If you prefer to run it locally, you can [download a release](https://github.com/mikeshultz/etherep/releases) and open `index.html` in the `dist` directory with a browser of your choice.
 
 An IPFS release is in the works.
 

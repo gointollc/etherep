@@ -41,7 +41,7 @@ gulp.task('html', () => {
     gulp.src([
         'etherep/src/templates/index.html'
     ])
-    .pipe(gulp.dest('etherep/dist/html/'))
+    .pipe(gulp.dest('etherep/dist/'))
 });
 
 gulp.task('default', [ 'css', 'deps', 'js', 'html' ]);

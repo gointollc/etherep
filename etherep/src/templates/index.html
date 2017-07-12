@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>etherep{{#title}} - Ethereum reputiation by address{{/title}}</title>
+        <title>etherep - Ethereum reputiation by address</title>
         <meta name="description" content="Ethereum reputiation by address">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen|Slabo+27px">
-        <link rel="stylesheet" href="/css/etherep.css">
+        <link rel="stylesheet" href="css/etherep.css">
     </head>
     <body>
         <header class="hero">
@@ -20,9 +20,10 @@
         </header>
         <div id="app"></div>
         <div id="modal-container"></div>
-        <script src="/js/web3.min.js"></script>
-        <script src="/js/mustache.js"></script>
-        <script src="/js/etherep.js"></script>
+        <footer>Copyright 2017 <a href="https://gointo.software" onclick="window.open(this.href); return false;">GoInto, LLC</a>. Etherep is <a href="https://github.com/mikeshultz/etherep" onclick="window.open(this.href); return false;">open source software</a> released under the Apache 2.0 license.</footer>
+        <script src="js/web3.min.js"></script>
+        <script src="js/mustache.js"></script>
+        <script src="js/etherep.js"></script>
         <script id="tmplMain" type="text/html">
             <section class="section" id="lookup">
                 <div class="container">
@@ -103,6 +104,19 @@
             </section>
             <section class="section" id="faq">
                 <div class="container">
+                    <h2 class="title is-2">What are your contract addresses?</h2>
+                    <p>The most current contract addresses can always be found in the migration contract at <code>{{ migrateAddress }}</code> by running the <code>getContract</code> function with the proper keys.  For instance, to get the contract address for Etherep, you could do something like this: </p>
+
+                    <p><pre class="code"><code>var migrationABI = [{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"getPermissions","outputs":[{"name":"","type":"bool"},{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"removeAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"addManager","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"key","type":"string"}],"name":"getContract","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"key","type":"string"},{"name":"contractAddress","type":"address"}],"name":"setContract","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"addAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"removeManager","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"originalAdmin","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"key","type":"string"},{"indexed":false,"name":"contractAddress","type":"address"}],"name":"EventSetContract","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventAddAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventRemoveAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventAddManager","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventRemoveManager","type":"event"}];
+var migrate = web3.eth.contract(migrationABI).at("{{ migrateAddress }}");
+migrate.getContract("etherep")
+"0xee7a7b5a928a87f4eefdb1cf9ec9f61287b83f5b"</code></pre></p>
+
+                    <p>We also have <code>ratingstore</code>(which does not accept calls from the public).  RatingStore is the data storage contract for Etherep.</p>
+
+                    <p>As of 2017-07-11, Etherep's address is <code>0xee7a7b5a928a87f4eefdb1cf9ec9f61287b83f5b</code> and RatingStore is at <code>0x70b3faf62b6d4a3e3d4a61d9f36d43232f4d1cec</code>.  Check our migration contract or <a href="https://www.etherep.com" onclick="window.open(this.href); return false;">etherep.com</a> for updated addresses in case we upgrade.</p>
+
+
                     <h2 class="title is-2">How does it work?</h2>
 
                     <p>Ratings are given from one address to another on a scale of -5(awful) to 5(great).  Users can rate an address for whatever reason they want.  Maybe they completed a transaction with another Ethereum user, or they just want to let people know how awesome or shifty their friends and enemies are.</p>
@@ -117,13 +131,14 @@
 
                     <h3 class="title is-3">Can I see the underlying contracts?</h3>
 
-                    <p>Absolutely!  Right now we have 2 contracts.  <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/etherep.sol">Etherep</a>, which handles calculation, formatting, and enforces some level of sanity to ratings.  This is the contract that users will interact with by using our dapp.</p>
+                    <p>Absolutely!  Right now we have 2 contracts.  <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/etherep.sol" onclick="window.open(this.href); return false;">Etherep</a>, which handles calculation, formatting, and enforces some level of sanity to ratings.  This is the contract that users will interact with by using our dapp.</p>
 
-                    <p>We also have a secondary contract, <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/ratingstore.sol">RatingStore</a> which handles storage of this underlying data.  Only our main contract can currently interact with it.  The idea of separating these is that Etherep is much more likely to be upgraded and it would be unfortunate to have to reset everyone's ratings.  That's the hope, anyway.</p>
+                    <p>We also have a secondary contract, <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/ratingstore.sol" onclick="window.open(this.href); return false;">RatingStore</a> which handles storage of this underlying data.  Only our main contract can currently interact with it.  The idea of separating these is that Etherep is much more likely to be upgraded and it would be unfortunate to have to reset everyone's ratings.  That's the hope, anyway.</p>
 
-                    <p>Etherep should still be considered BETA software.  Data may be wiped at any point, and our contract addresses may change.  Check back here for the current addresses.  If you find any bugs, please let us know at <a href="mailto:contact@gointo.software">contact@gointo.software</a></p>
+                    <p>Etherep should still be considered BETA software.  Data may be wiped at any point, and our contract addresses may change.  Check <a href="https://www.etherep.com" onclick="window.open(this.href); return false;">etherep.com</a> or our migration contract(see above) for the current addresses.  If you find any bugs, please E-mail <a href="mailto:contact@gointo.software">contact@gointo.software</a> or open a ticket in the <a href="https://github.com/mikeshultz/etherep-contracts/">github repository</a>.</p>
                 </div>
             </section>
+
         </script>
         <script id="tmplNotice" type="text/html">
             <div class="modal is-active">

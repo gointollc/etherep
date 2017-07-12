@@ -10,3 +10,7 @@ The easiest way to use Etherep is at the Web site at [etherep.com](https://www.e
 Easiest way would be to run `npm install && gulp`.  
 
 That should install all the necessary dependencies and build Etherep into the `dist` directory.
+
+## Contracts
+
+The Etherep supporting Ethereum smart contracts are in the [etherep-contracts repository](https://github.com/mikeshultz/etherep-contracts).

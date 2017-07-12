@@ -9,7 +9,11 @@ An IPFS release is in the works.
 
 ## Building Etherep
 
+### Build Dependencies
+
 You need to have [nodejs](https://nodejs.org), [npm](https://npmjs.com), and [gulp](http://gulpjs.com) installed.  Please consult their respective documentation on how to install it on the OS of your choice.
+
+## Dependencies and Build
 
 Easiest way would be to run `npm install && gulp`.  
 

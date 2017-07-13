@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>etherep - Ethereum reputiation by address</title>
+        <meta name="description" content="Ethereum reputiation by address">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen|Slabo+27px">
+        <link rel="stylesheet" href="css/etherep.css">
+    </head>
+    <body>
+        <header class="hero">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">ehterep</h1>
+                    <h2 class="subtitle">Simple Ethereum reputation by address</h2>
+                </div>
+            </div>
+        </header>
+        <div id="app"></div>
+        <div id="modal-container"></div>
+        <footer>Copyright 2017 <a href="https://gointo.software" onclick="window.open(this.href); return false;">GoInto, LLC</a>. Etherep is <a href="https://github.com/mikeshultz/etherep" onclick="window.open(this.href); return false;">open source software</a> released under the Apache 2.0 license.</footer>
+        <script src="js/web3.min.js"></script>
+        <script src="js/mustache.js"></script>
+        <script src="js/etherep.js"></script>
+        <script id="tmplMain" type="text/html">
+            <section class="section" id="lookup">
+                <div class="container">
+                    <h2 class="title is-2">Lookup</h2>
+
+                    <p class="subtitle is-5">Look up the cumulative rating for an address</p>
+
+                    <form id="lookup-form" onsubmit="submitLookup(this); return false;">
+
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input" name="address" type="text" placeholder="0x0123deadbeef...">
+                            </p>
+                            <p class="control">
+                                <button id="lookup-button" type="submit" class="button is-info has-icons-left">
+                                    <i class="fa fa-search"></i>
+                                    Lookup
+                                </button>
+                            </p>
+                        </div>
+
+                    </form>
+
+                    <p id="lookup-score" class="hide"></p>
+                </div>
+            </section>
+
+            <section class="section" id="rate">
+                <div class="readOnlyOverlay ro"><p>To make any ratings, you need to use a Web3 compatible browser.</p></div>
+                <div class="container">
+                    <h2 class="title is-2">Rate</h2>
+
+                    <p class="subtitle is-5">Rate an address on a scale of -5 to 5 on how well your transaction(s) went with them.</p>
+
+                    <div class="field has-addons rating-gradient">
+                        <p class="control">
+                            <input class="input" id="rating-address" type="text" placeholder="0x0123deadbeef...">
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-5)">-5</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-4)">-4</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-danger" onclick="selectRating(-3)">-3</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(-2)">-2</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(-1)">-1</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-info" onclick="selectRating(0)">0</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(1)">1</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-warning" onclick="selectRating(2)">2</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(3)">3</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(4)">4</button>
+                        </p>
+                        <p class="control">
+                            <button class="button is-success" onclick="selectRating(5)">5</button>
+                        </p>
+                    </div>
+
+                    <p id="rating-results" class="hide"></p>
+
+                    <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup></p>
+                </div>
+            </section>
+            <section class="section" id="faq">
+                <div class="container">
+                    <h2 class="title is-2">What are your contract addresses?</h2>
+                    <p>The most current contract addresses can always be found in the migration contract at <code>{{ migrateAddress }}</code> by running the <code>getContract</code> function with the proper keys.  For instance, to get the contract address for Etherep, you could do something like this: </p>
+
+                    <p><pre class="code"><code>var migrationABI = [{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"getPermissions","outputs":[{"name":"","type":"bool"},{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"removeAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"addManager","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"key","type":"string"}],"name":"getContract","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"key","type":"string"},{"name":"contractAddress","type":"address"}],"name":"setContract","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"addAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"removeManager","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"originalAdmin","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"key","type":"string"},{"indexed":false,"name":"contractAddress","type":"address"}],"name":"EventSetContract","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventAddAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventRemoveAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventAddManager","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventRemoveManager","type":"event"}];
+var migrate = web3.eth.contract(migrationABI).at("{{ migrateAddress }}");
+migrate.getContract("etherep")
+"0xee7a7b5a928a87f4eefdb1cf9ec9f61287b83f5b"</code></pre></p>
+
+                    <p>We also have <code>ratingstore</code>(which does not accept calls from the public).  RatingStore is the data storage contract for Etherep.</p>
+
+                    <p>As of 2017-07-11, Etherep's address is <code>0xee7a7b5a928a87f4eefdb1cf9ec9f61287b83f5b</code> and RatingStore is at <code>0x70b3faf62b6d4a3e3d4a61d9f36d43232f4d1cec</code>.  Check our migration contract or <a href="https://www.etherep.com" onclick="window.open(this.href); return false;">etherep.com</a> for updated addresses in case we upgrade.</p>
+
+
+                    <h2 class="title is-2">How does it work?</h2>
+
+                    <p>Ratings are given from one address to another on a scale of -5(awful) to 5(great).  Users can rate an address for whatever reason they want.  Maybe they completed a transaction with another Ethereum user, or they just want to let people know how awesome or shifty their friends and enemies are.</p>
+
+                    <p>Ratings are also weighted according to the score of the rater.  Addresses with a good rating will have a higher impact than those with no or negative rating.</p>
+
+                    <p>The idea here is that this system can be used to compliment any number of services or simple transactions on the <a href="https://www.ethereum.org/" onclick="window.open(this.href); return false;">Ethereum network</a>. So there's no limiting factor as to <em>why</em> someone might use this service.  You are welcome and encouraged to connect to our contract to get/give ratings for your own dapps as well.  We also have a <a href="#">RESTful API</a> available for regular old Web apps.</p>
+
+                    <h3 class="title is-3">What prevents bots and spam?</h3>
+
+                    <p>As of right now, ratings are limited to one rating from one address to another once per day.  A fee of &Xi;{{ fee }} is also imposed on top of the Ethereum network fee to try and dissuade large amounts of ratings.  This fee may be adjusted depending on the level of spam going on, but ideally this will stay pretty low to under $0.10 USD.</p>
+
+                    <h3 class="title is-3">Can I see the underlying contracts?</h3>
+
+                    <p>Absolutely!  Right now we have 2 contracts.  <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/etherep.sol" onclick="window.open(this.href); return false;">Etherep</a>, which handles calculation, formatting, and enforces some level of sanity to ratings.  This is the contract that users will interact with by using our dapp.</p>
+
+                    <p>We also have a secondary contract, <a href="https://github.com/mikeshultz/etherep-contracts/blob/master/contracts/ratingstore.sol" onclick="window.open(this.href); return false;">RatingStore</a> which handles storage of this underlying data.  Only our main contract can currently interact with it.  The idea of separating these is that Etherep is much more likely to be upgraded and it would be unfortunate to have to reset everyone's ratings.  That's the hope, anyway.</p>
+
+                    <p>Etherep should still be considered BETA software.  Data may be wiped at any point, and our contract addresses may change.  Check <a href="https://www.etherep.com" onclick="window.open(this.href); return false;">etherep.com</a> or our migration contract(see above) for the current addresses.  If you find any bugs, please E-mail <a href="mailto:contact@gointo.software">contact@gointo.software</a> or open a ticket in the <a href="https://github.com/mikeshultz/etherep-contracts/">github repository</a>.</p>
+                </div>
+            </section>
+
+        </script>
+        <script id="tmplNotice" type="text/html">
+            <div class="modal is-active">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">{{ title }}</p>
+                        <button class="delete" onclick="etherep.closeModals();"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <p>{{ content }}</p>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-primary" onclick="etherep.closeModals();">Close</button>
+                    </footer>
+                </div>
+            </div>
+        </script>
+        <script id="tmplLookupResults" type="text/html">
+            <article class="message"><div class="message-body">{{ address }} has a cumulative score of <span class="score {{ scoreClass }}">{{ score }}</span> with {{ count }} ratings.</div></article>
+        </script>
+        <script id="tmplLookupError" type="text/html">
+            <article class="message"><div class="notification is-danger">There was an unhandled error performing the lookup: {{ errorMessage }}</div></article>
+        </script>
+        <script id="tmplRatingResults" type="text/html">
+            <article class="message">
+                <p class="message-body">{{ address }} has successfully been rated <span class="score {{ scoreClass }}">{{ score }}</span>.</p>
+                <p class="small">Transaction: <a href="https://etherscan.io/tx/{{ transaction }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
+            </article>
+        </script>
+        <script>
+            (function() {
+                window.addEventListener('load', function() {
+                    console.log('load');
+                    // Init
+                    window.etherep = new Etherep(byid('app'));
+                });
+            })();
+        </script>
+    </body>
+</html>

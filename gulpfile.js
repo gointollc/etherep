@@ -23,6 +23,11 @@ gulp.task('deps', () => {
     .pipe(gulp.dest('etherep/dist/js'));
 });
 
+gulp.task('images', () => {
+  return gulp.src('etherep/src/images/*.{gif,jpg,svg,png}')
+    .pipe(gulp.dest('etherep/dist/images'));
+});
+
 gulp.task('js', () => {
   return gulp.src([
     'node_modules/page/page.js',
@@ -44,4 +49,4 @@ gulp.task('html', () => {
     .pipe(gulp.dest('etherep/dist/'))
 });
 
-gulp.task('default', [ 'css', 'deps', 'js', 'html' ]);
+gulp.task('default', [ 'css', 'deps', 'js', 'images', 'html' ]);

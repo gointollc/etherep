@@ -61,6 +61,18 @@ header {
         background: $primary-color;
         color: $complimentary-color;
         font-weight: bold;
+        .title {
+            font-size: 4rem;
+            height: 4.5rem;
+        }
+    }
+    .scale {
+        position: relative;
+        top: -.5rem;
+        left: 5.1rem;
+        img {
+            margin: 0 0 55px;
+        }
     }
 }
 

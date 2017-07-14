@@ -88,6 +88,7 @@ class Etherep {
                 this._setReadOnly(true);
             } else {
                 this.web3 = web3;
+                this._setReadOnly(false);
             }
         }
 
@@ -278,7 +279,7 @@ class Etherep {
      * @param {boolean} ro - readOnly setting
      */
     _setReadOnly(ro) {
-
+        
         // Set the var
         this.readOnly = ro;
 
@@ -295,7 +296,7 @@ class Etherep {
 
         // Set it
         for (var i = 0; i < roEls.length; i++) {
-            roEls[i].style.display = "block";
+            roEls[i].style.display = display;
         }
 
     }

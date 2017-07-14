@@ -111,6 +111,7 @@ var Etherep = function () {
                 this._setReadOnly(true);
             } else {
                 this.web3 = web3;
+                this._setReadOnly(false);
             }
         }
     }
@@ -305,7 +306,7 @@ var Etherep = function () {
     }, {
         key: "_setReadOnly",
         value: function _setReadOnly(ro) {
-
+            console.log("setReadOnly(" + ro + ")");
             // Set the var
             this.readOnly = ro;
 
@@ -322,7 +323,7 @@ var Etherep = function () {
 
             // Set it
             for (var i = 0; i < roEls.length; i++) {
-                roEls[i].style.display = "block";
+                roEls[i].style.display = display;
             }
         }
 

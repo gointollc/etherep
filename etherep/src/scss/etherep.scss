@@ -107,14 +107,25 @@ pre {
         min-height: 135px;
     }
     .graphical {
-        float: left;
         height: 110px;
-        .scale {
-            clear: both;
-            float: right;
+        @include desktop {
+            float: left;
+            .scale {
+                clear: both;
+                float: right;
+            }
+            .identicon {
+                float: right;
+            }
         }
-        .identicon {
-            float: right;
+        @include mobile {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            padding: 0;
+            p {
+
+            }
         }
     }
     .textual {
@@ -136,6 +147,9 @@ pre {
                 color: $bad;
             }
         }
+        @include mobile {
+            text-align: center;
+        }
     }
 }
 
@@ -148,6 +162,7 @@ pre {
 }
 
 #rate {
+    position: relative;
     .has-addons {
         @include mobile {
             display: block;
@@ -157,11 +172,16 @@ pre {
         position: absolute;
         display: block;
         background: $badTransparent;
-        height: 12rem;
+        /*height: 12rem;*/
         width: 100%;
         z-index: 5;
         p {
-            margin-top: 4.5rem;
+            position: relative;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+
             font-size: 150%;
             color: #fff;
             font-weight: bold;

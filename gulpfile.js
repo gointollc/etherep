@@ -19,6 +19,7 @@ gulp.task('deps', () => {
   return gulp.src([
     'node_modules/web3/dist/web3.min.js',
     'node_modules/mustache/mustache.js',
+    'node_modules/identicon.js/identicon.js',
     ])
     .pipe(gulp.dest('etherep/dist/js'));
 });

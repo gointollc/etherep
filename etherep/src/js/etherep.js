@@ -70,6 +70,7 @@ class Etherep {
         this.web3 = null;
         this.web3Connected = false;
         this.address = null;
+        this.network = null;
 
         /*if (typeof page == typeof undefined) {
             console.error("page is unavailable, this app will not work properly!");
@@ -120,6 +121,9 @@ class Etherep {
                         if (err) {
                             reject("User is not using a Web3 browser!");
                         }
+
+                        // Set current network
+                        this.network = netId;
 
                         // Need to be connected to a network with our contracts deployed
                         if (NETWORKS.includes(netId)) {
@@ -199,7 +203,7 @@ class Etherep {
      * @param {string} url - The string to test to see if it's a URL
      */
     _isTemplateUrl(url) {
-        if (url !== undefined && (url.slice(0,4) === "http" || url.slice(0,1) === '/')) return true;
+        if (typeof url === "string" && (url.slice(0,4) === "http" || url.slice(0,1) === '/')) return true;
         return false;
     }
 
@@ -323,19 +327,6 @@ class Etherep {
     }
 
     /**
-     * Show the lookup page
-     * @param {string} address - The ethereum address to lookup
-     */
-    showLookup(address) {}
-
-    /**
-     * Show the rating form
-     */
-    showRate() {
-
-    }
-
-    /**
      * Lookup the rating for an address
      * @param {string} address - The ethereum address to lookup
      * @returns {int} - The rating for the address
@@ -351,8 +342,8 @@ class Etherep {
 
         // Show results element
         targetElement.classList.remove('hide');
-        // Add loading effects
-        targetElement.classList.add('spinner');
+        // Render loading spinner
+        this._render(targetElement, byid('tmplSpinner').innerHTML, {});
 
         let submitButton = byid('lookup-button');
         // Signal loading
@@ -381,15 +372,24 @@ class Etherep {
                 else if (score >= 3) scoreClass = "good";
                 console.log("Score: ", score, " scoreClass: ", scoreClass);
 
+                // Get identicon
+                let identOptions = {
+                      background: [253, 231, 208, 255],
+                      margin: 0.2,
+                      size: 100,
+                      format: 'svg'
+                    };
+                let identData = new Identicon(address, identOptions).toString();
+
                 // Render the element
                 that._render(targetElement, byid('tmplLookupResults').innerHTML, {
                     address: address,
                     score: score,
                     count: resp[1],
-                    scoreClass: scoreClass
+                    scoreClass: scoreClass,
+                    identicon: identData
                 });
 
-                targetElement.classList.remove('spinner');
                 submitButton.classList.remove('is-loading');
 
             });
@@ -397,7 +397,6 @@ class Etherep {
         }).catch(function(err) {
 
             // Reset all style
-            targetElement.classList.remove('spinner');
             submitButton.classList.remove('is-loading');
 
             // And signal error on the input
@@ -440,8 +439,9 @@ class Etherep {
             // Get the target element and show loading effect
             let targetElement = byid('rating-results');
             targetElement.classList.remove('hide');
-            targetElement.classList.add('spinner');
-            console.log("making rep.rate call");
+            // Render loading spinner
+            that._render(targetElement, byid('tmplSpinner').innerHTML, {});
+            
             response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 300000 }, function(err, resp) {
                 console.log('rep.rate callback');
                 console.log(resp);
@@ -452,15 +452,20 @@ class Etherep {
 
                 } else {
 
+                    let etherscanLink;
+                    if (that.network == "3") {
+                        etherscanLink = "https://ropsten.etherscan.io/tx/" + resp;
+                    } else {
+                        etherscanLink = "https://etherscan.io/tx/" + resp;
+                    }
+
                     // Render the notice
                     that._render(targetElement, byid('tmplRatingResults').innerHTML, {
                         address: address,
                         score: rating,
-                        transaction: resp
+                        transaction: resp,
+                        etherscanLink: etherscanLink
                     });
-
-                    // Done loading
-                    targetElement.classList.remove('spinner');
 
                 }
 

@@ -26,6 +26,7 @@
         <footer>Copyright 2017 <a href="https://gointo.software" onclick="window.open(this.href); return false;">GoInto, LLC</a>. Etherep is <a href="https://github.com/gointollc/etherep" onclick="window.open(this.href); return false;">open source software</a> released under the Apache 2.0 license.</footer>
         <script src="js/web3.min.js"></script>
         <script src="js/mustache.js"></script>
+        <script src="js/identicon.js"></script>
         <script src="js/etherep.js"></script>
         <script id="tmplMain" type="text/html">
             <section class="section" id="lookup">
@@ -125,15 +126,32 @@
             </div>
         </script>
         <script id="tmplLookupResults" type="text/html">
-            <article class="message"><div class="message-body">{{ address }} has a cumulative score of <span class="score {{ scoreClass }}">{{ score }}</span> with {{ count }} ratings.</div></article>
+            <article class="lookup-results">
+                <div class="columns">
+                    <div class="graphical column is-one-quarter">
+                        <p>
+                            <img width="100" height="100" src="data:image/svg+xml;base64,{{ identicon }}" class="identicon">
+                            <img src="images/scale_{{ score }}.svg" class="scale">
+                        </p>
+                    </div>
+                    <div class="textual column is-three-quarters">
+                        <p>
+                            {{ address }} has a cumulative score of <span class="score {{ scoreClass }}">{{ score }}</span> with {{ count }} ratings.
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </script>
+        <script id="tmplSpinner" type="text/html">
+            <div class="spinner {{ class }}"></div>
         </script>
         <script id="tmplLookupError" type="text/html">
             <article class="message"><div class="notification is-danger">There was an unhandled error performing the lookup: {{ errorMessage }}</div></article>
         </script>
         <script id="tmplRatingResults" type="text/html">
             <article class="message">
-                <p class="message-body">{{ address }} has successfully been rated <span class="score {{ scoreClass }}">{{ score }}</span>.</p>
-                <p class="small">Transaction: <a href="https://etherscan.io/tx/{{ transaction }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
+                <p class="message-body">Rating of <span class="score {{ scoreClass }}">{{ score }}</span> has been submitted for {{ address }}.</p>
+                <p class="small">Transaction: <a href="{{ etherscanLink }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
             </article>
         </script>
         <script>

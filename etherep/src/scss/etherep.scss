@@ -20,8 +20,8 @@ $badTransparent:        rgba(247, 143, 104, 0.9);
 @import "bulma/sass/layout/hero";
 @import "bulma/sass/components/modal";
 @import "bulma/sass/components/message";
-/*@import "bulma/sass/grid/columns";
-@import "bulma/sass/elements/box";*/
+@import "bulma/sass/grid/columns";
+/*@import "bulma/sass/elements/box";*/
 @import "bulma/sass/elements/notification";
 @import "bulma/sass/elements/title";
 @import "bulma/sass/elements/button";
@@ -92,7 +92,27 @@ pre {
 }
 
 #lookup-score {
-    .message {
+    article {
+        background: $code-background;
+        height: 135px;
+    }
+    .graphical {
+        float: left;
+        height: 110px;
+        .scale {
+            clear: both;
+            float: right;
+        }
+        .identicon {
+            float: right;
+        }
+    }
+    .textual {
+        /*float: left;
+        height: 130px;*/
+        p {
+            margin-top: 1.5rem;
+        }
         .score {
             font-size: 200%;
             font-weight: bold;
@@ -127,8 +147,23 @@ pre {
     }
 }
 
+#rating-results {
+    .message {
+        .small {
+            padding: 0 1.25em 1rem;
+        }
+    }
+}
+
 .hide, .ro {
     display: none;
+}
+
+.spinner {
+    display: block;
+    height: 135px;
+    width: 135px;
+    margin: 0 auto;
 }
 
 .rating-gradient {

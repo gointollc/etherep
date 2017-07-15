@@ -17,6 +17,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
+    "identicon.js": "^2.3.1",
     "mustache": "^2.3.0",
     "web3": "^0.19.1"
   }

@@ -93,6 +93,7 @@ var Etherep = function () {
         this.web3 = null;
         this.web3Connected = false;
         this.address = null;
+        this.network = null;
 
         /*if (typeof page == typeof undefined) {
             console.error("page is unavailable, this app will not work properly!");
@@ -126,6 +127,8 @@ var Etherep = function () {
     _createClass(Etherep, [{
         key: "_web3Valid",
         value: function _web3Valid() {
+            var _this = this;
+
             var ignoreDefault = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
             var that = this;
@@ -146,6 +149,9 @@ var Etherep = function () {
                             if (err) {
                                 reject("User is not using a Web3 browser!");
                             }
+
+                            // Set current network
+                            _this.network = netId;
 
                             // Need to be connected to a network with our contracts deployed
                             if (NETWORKS.includes(netId)) {
@@ -217,7 +223,7 @@ var Etherep = function () {
     }, {
         key: "_isTemplateUrl",
         value: function _isTemplateUrl(url) {
-            if (url !== undefined && (url.slice(0, 4) === "http" || url.slice(0, 1) === '/')) return true;
+            if (typeof url === "string" && (url.slice(0, 4) === "http" || url.slice(0, 1) === '/')) return true;
             return false;
         }
 
@@ -258,7 +264,7 @@ var Etherep = function () {
     }, {
         key: "_render",
         value: function _render(element, template, context) {
-            var _this = this;
+            var _this2 = this;
 
             return new Promise(function (resolve, reject) {
 
@@ -268,13 +274,13 @@ var Etherep = function () {
                     migrateAddress: MIGRATION_ADDR
                 });
 
-                if (_this._isTemplateUrl(template)) {
+                if (_this2._isTemplateUrl(template)) {
 
-                    _this._getTemplate(template).then(function (tmpl) {
+                    _this2._getTemplate(template).then(function (tmpl) {
 
                         element.innerHTML = Mustache.render(tmpl, combinedContext);
                         resolve();
-                    }.bind(_this)).catch(function (err) {
+                    }.bind(_this2)).catch(function (err) {
 
                         reject(err);
                     });
@@ -306,7 +312,7 @@ var Etherep = function () {
     }, {
         key: "_setReadOnly",
         value: function _setReadOnly(ro) {
-            console.log("setReadOnly(" + ro + ")");
+
             // Set the var
             this.readOnly = ro;
 
@@ -351,23 +357,6 @@ var Etherep = function () {
         }
 
         /**
-         * Show the lookup page
-         * @param {string} address - The ethereum address to lookup
-         */
-
-    }, {
-        key: "showLookup",
-        value: function showLookup(address) {}
-
-        /**
-         * Show the rating form
-         */
-
-    }, {
-        key: "showRate",
-        value: function showRate() {}
-
-        /**
          * Lookup the rating for an address
          * @param {string} address - The ethereum address to lookup
          * @returns {int} - The rating for the address
@@ -386,8 +375,8 @@ var Etherep = function () {
 
             // Show results element
             targetElement.classList.remove('hide');
-            // Add loading effects
-            targetElement.classList.add('spinner');
+            // Render loading spinner
+            this._render(targetElement, byid('tmplSpinner').innerHTML, {});
 
             var submitButton = byid('lookup-button');
             // Signal loading
@@ -414,21 +403,29 @@ var Etherep = function () {
                     if (score >= -5 && score < -1) scoreClass = "bad";else if (score >= -1 && score < 3) scoreClass = "fair";else if (score >= 3) scoreClass = "good";
                     console.log("Score: ", score, " scoreClass: ", scoreClass);
 
+                    // Get identicon
+                    var identOptions = {
+                        background: [253, 231, 208, 255],
+                        margin: 0.2,
+                        size: 100,
+                        format: 'svg'
+                    };
+                    var identData = new Identicon(address, identOptions).toString();
+
                     // Render the element
                     that._render(targetElement, byid('tmplLookupResults').innerHTML, {
                         address: address,
                         score: score,
                         count: resp[1],
-                        scoreClass: scoreClass
+                        scoreClass: scoreClass,
+                        identicon: identData
                     });
 
-                    targetElement.classList.remove('spinner');
                     submitButton.classList.remove('is-loading');
                 });
             }).catch(function (err) {
 
                 // Reset all style
-                targetElement.classList.remove('spinner');
                 submitButton.classList.remove('is-loading');
 
                 // And signal error on the input
@@ -472,8 +469,9 @@ var Etherep = function () {
                 // Get the target element and show loading effect
                 var targetElement = byid('rating-results');
                 targetElement.classList.remove('hide');
-                targetElement.classList.add('spinner');
-                console.log("making rep.rate call");
+                // Render loading spinner
+                that._render(targetElement, byid('tmplSpinner').innerHTML, {});
+
                 response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 300000 }, function (err, resp) {
                     console.log('rep.rate callback');
                     console.log(resp);
@@ -483,15 +481,20 @@ var Etherep = function () {
                         return;
                     } else {
 
+                        var etherscanLink = void 0;
+                        if (that.network == "3") {
+                            etherscanLink = "https://ropsten.etherscan.io/tx/" + resp;
+                        } else {
+                            etherscanLink = "https://etherscan.io/tx/" + resp;
+                        }
+
                         // Render the notice
                         that._render(targetElement, byid('tmplRatingResults').innerHTML, {
                             address: address,
                             score: rating,
-                            transaction: resp
+                            transaction: resp,
+                            etherscanLink: etherscanLink
                         });
-
-                        // Done loading
-                        targetElement.classList.remove('spinner');
                     }
                 });
             });

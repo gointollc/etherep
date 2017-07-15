@@ -24,12 +24,72 @@ function submitLookup(form) {
     else etherep.lookup(form.elements['address'].value);
 }
 
-function selectRating(rating) {
+function selectRating(thisButt, rating) {
     console.log("selectRating");
-    console.log(rating);
-    var who = byid('rating-address').value;
-    etherep.rate(who, rating);
+    
+    let butts = document.getElementsByClassName('rating-button');
+    
+    if (byid('rating-list').classList.contains('collapsed')) {
+
+        // Show all buttons
+        for (let i = 0; i < butts.length; i++) {
+
+            butts[i].parentElement.classList.add('show');
+
+        }
+
+        // Remove the collapsed class
+        byid('rating-list').classList.remove('collapsed');
+
+    } else {
+
+        // Hide all buttons
+        for (let i = 0; i < butts.length; i++) {
+
+            // Except this one
+            if (butts[i] !== thisButt) {
+                butts[i].parentElement.classList.remove('show');
+            }
+
+        }
+
+        // Add the collapsed class
+        byid('rating-list').classList.add('collapsed');
+
+    }
+
+    byid('rating-value').value = rating;
+
     return false;
+}
+
+function submitRating() {
+    let who = byid('rating-address').value;
+    let rating = byid('rating-value').value;
+    etherep.rate(who, rating);
+}
+
+function toggleRatingList() {
+    /*if (byid('rating-list').classList.contains('is-hidden-mobile')) {
+        byid('rating-list').classList.remove('is-hidden-mobile');
+    } else {
+        byid('rating-list').classList.add('is-hidden-mobile');
+    }*/
+
+    let butts = document.getElementsByClassName('rating-button');
+
+    if (byid('rating-list').classList.contains('collapsed')) {
+
+        for (let i = 0; i < butts.length; i++) {
+            butts[i].classList.remove('mobi-show');
+        }
+
+    }
+    
+
+    for (let i = 0; i < butts.length; i++) {
+        butts[i].classList.remove('mobi-show');
+    }
 }
 
 /**
@@ -86,7 +146,7 @@ class Etherep {
             if (typeof web3 == typeof undefined) {
                 console.warn("Attempting to create a connection to default RPC");
                 this.web3 = new Web3(new Web3.providers.HttpProvider(DEFAULT_PROVIDER));
-                this._setReadOnly(true);
+                this._setReadOnly(false); // CHANGEME
             } else {
                 this.web3 = web3;
                 this._setReadOnly(false);
@@ -420,6 +480,7 @@ class Etherep {
     rate(address, rating) {
 
         // Sanity checks
+        // TODO: give feedback to user
         if (rating < -5 || rating > 5) {
             console.error("Rating out of bounds");
             return;

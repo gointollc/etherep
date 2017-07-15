@@ -62,7 +62,7 @@
 
                     <p class="subtitle is-5">Rate an address on a scale of -5 to 5 on how well your transaction(s) went with them.</p>
 
-                    <div class="field has-addons rating-gradient">
+                    <!--<div class="field has-addons rating-gradient">
                         <p class="control">
                             <input class="input" id="rating-address" type="text" placeholder="0x0123deadbeef...">
                         </p>
@@ -99,6 +99,56 @@
                         <p class="control">
                             <button class="button is-success" onclick="selectRating(5)">5</button>
                         </p>
+                    </div>//-->
+
+                    <div class="field has-addons rating-gradient">
+                        <p class="control">
+                            <input class="input" id="rating-address" type="text" placeholder="0x0123deadbeef...">
+                        </p>
+
+                        <!--<p class="dropdown-button is-flex-mobile">
+                            <button class="button is-info" onclick="toggleRatingList(); return false;">Select Rating</button>
+                        </p>//-->
+                        <ul id="rating-list" class="collapsed">
+                            <li class="control">
+                                <button class="button is-danger rating-button" onclick="selectRating(this, -5)">-5</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-danger rating-button" onclick="selectRating(this, -4)">-4</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-danger rating-button" onclick="selectRating(this, -3)">-3</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-warning rating-button" onclick="selectRating(this, -2)">-2</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-warning rating-button" onclick="selectRating(this, -1)">-1</button>
+                            </li>
+                            <li class="control show">
+                                <button class="button is-info rating-button" onclick="selectRating(this, 0)">0</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-warning rating-button" onclick="selectRating(this, 1)">1</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-warning rating-button" onclick="selectRating(this, 2)">2</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-success rating-button" onclick="selectRating(this, 3)">3</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-success rating-button" onclick="selectRating(this, 4)">4</button>
+                            </li>
+                            <li class="control">
+                                <button class="button is-success rating-button" onclick="selectRating(this, 5)">5</button>
+                            </li>
+                        </ul>
+
+                        <p class="control submit">
+                            <button class="button is-info" onclick="submitRating(); return false;">Submit Rating</button>
+                        </p>
+                        <input type="hidden" id="rating-value" value="0">
                     </div>
 
                     <p id="rating-results" class="hide"></p>
@@ -126,7 +176,7 @@
             </div>
         </script>
         <script id="tmplLookupResults" type="text/html">
-            <article class="lookup-results">
+            <article class="lookup-results is-clearfix">
                 <div class="columns">
                     <div class="graphical column is-one-quarter">
                         <p>

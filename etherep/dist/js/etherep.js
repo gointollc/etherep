@@ -31,12 +31,66 @@ function submitLookup(form) {
     if (typeof etherep === 'undefined') console.error("etherep not defined!");else etherep.lookup(form.elements['address'].value);
 }
 
-function selectRating(rating) {
+function selectRating(thisButt, rating) {
     console.log("selectRating");
-    console.log(rating);
-    var who = byid('rating-address').value;
-    etherep.rate(who, rating);
+
+    var butts = document.getElementsByClassName('rating-button');
+
+    if (byid('rating-list').classList.contains('collapsed')) {
+
+        // Show all buttons
+        for (var i = 0; i < butts.length; i++) {
+
+            butts[i].parentElement.classList.add('show');
+        }
+
+        // Remove the collapsed class
+        byid('rating-list').classList.remove('collapsed');
+    } else {
+
+        // Hide all buttons
+        for (var _i = 0; _i < butts.length; _i++) {
+
+            // Except this one
+            if (butts[_i] !== thisButt) {
+                butts[_i].parentElement.classList.remove('show');
+            }
+        }
+
+        // Add the collapsed class
+        byid('rating-list').classList.add('collapsed');
+    }
+
+    byid('rating-value').value = rating;
+
     return false;
+}
+
+function submitRating() {
+    var who = byid('rating-address').value;
+    var rating = byid('rating-value').value;
+    etherep.rate(who, rating);
+}
+
+function toggleRatingList() {
+    /*if (byid('rating-list').classList.contains('is-hidden-mobile')) {
+        byid('rating-list').classList.remove('is-hidden-mobile');
+    } else {
+        byid('rating-list').classList.add('is-hidden-mobile');
+    }*/
+
+    var butts = document.getElementsByClassName('rating-button');
+
+    if (byid('rating-list').classList.contains('collapsed')) {
+
+        for (var i = 0; i < butts.length; i++) {
+            butts[i].classList.remove('mobi-show');
+        }
+    }
+
+    for (var _i2 = 0; _i2 < butts.length; _i2++) {
+        butts[_i2].classList.remove('mobi-show');
+    }
 }
 
 /**
@@ -109,7 +163,7 @@ var Etherep = function () {
             if ((typeof web3 === "undefined" ? "undefined" : _typeof(web3)) == (typeof undefined === "undefined" ? "undefined" : _typeof(undefined))) {
                 console.warn("Attempting to create a connection to default RPC");
                 this.web3 = new Web3(new Web3.providers.HttpProvider(DEFAULT_PROVIDER));
-                this._setReadOnly(true);
+                this._setReadOnly(false); // CHANGEME
             } else {
                 this.web3 = web3;
                 this._setReadOnly(false);
@@ -450,6 +504,7 @@ var Etherep = function () {
         value: function rate(address, rating) {
 
             // Sanity checks
+            // TODO: give feedback to user
             if (rating < -5 || rating > 5) {
                 console.error("Rating out of bounds");
                 return;

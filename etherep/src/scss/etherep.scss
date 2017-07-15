@@ -44,6 +44,16 @@ section {
     margin-bottom: 2rem;
     .input {
         width: 30rem;
+        @include mobile {
+            width: 100%;
+        }
+    }
+    @include mobile {
+        .control {
+            .button {
+                width: 100%;
+            }
+        }
     }
     .container {
         h3 {
@@ -94,7 +104,7 @@ pre {
 #lookup-score {
     article {
         background: $code-background;
-        height: 135px;
+        min-height: 135px;
     }
     .graphical {
         float: left;
@@ -108,8 +118,8 @@ pre {
         }
     }
     .textual {
-        /*float: left;
-        height: 130px;*/
+        float: left;
+        /*height: 130px;*/
         p {
             margin-top: 1.5rem;
         }
@@ -129,7 +139,20 @@ pre {
     }
 }
 
+#lookup-form {
+    .has-addons {
+        @include mobile {
+            display: block;
+        }
+    }
+}
+
 #rate {
+    .has-addons {
+        @include mobile {
+            display: block;
+        }
+    }
     .readOnlyOverlay {
         position: absolute;
         display: block;
@@ -168,13 +191,49 @@ pre {
 
 .rating-gradient {
 
+    .button {
+        width: 3rem;
+        color: #fff;
+    }
+    .button:hover {
+        color: #fff;
+    }
     p {
-        .button {
-            width: 3rem;
-            color: #000;
+        &.submit {
+            button {
+                @include mobile {
+                    width: 100%;
+                    margin-top: 1rem;
+                }
+            }
         }
-        .button:hover {
-            color: #fff;
+        @include desktop {
+            &.submit .button {
+                width: inherit;
+            }
+        }
+    }
+
+    p:nth-of-type(1) {
+        display: block;
+        clear: both;
+    }
+
+    /*p:nth-of-type(2),
+    p:nth-of-type(3),
+    p:nth-of-type(4),
+    p:nth-of-type(5),
+    p:nth-of-type(6),
+    p:nth-of-type(7),
+    p:nth-of-type(8),
+    p:nth-of-type(9),
+    p:nth-of-type(10),
+    p:nth-of-type(11),
+    p:nth-of-type(12) {
+        display: block;
+        margin-bottom: 0;
+        button {
+            width: 100%;
         }
     }
 
@@ -210,6 +269,83 @@ pre {
     }
     p:nth-of-type(11) .button {
         background: #01BF00;
+    }*/
+
+    ul#rating-list {
+
+        list-style-type: none;
+        margin-left: 0;
+
+        /*@include mobile {
+            li {
+                display: none;
+            }
+            li.mobi-show {
+                display: block;
+            }
+        }*/
+        @include mobile {
+            li {
+                text-indent: -9999px;
+                &,button {
+                    height: 0;
+                    -webkit-transition: height 0.8s;
+                    -moz-transition: height 0.8s;
+                    transition: height 0.8s;
+                }
+            }
+            li.show { 
+                text-indent: 0;
+                &,button {
+                    height: 2.5rem;
+                    -webkit-transition: height 0.8s;
+                    -moz-transition: height 0.8s;
+                    transition: height 0.8s;
+                }
+            }
+        }
+        @include desktop {
+            li, li button {
+                display: inline-block;
+                margin-right: -2px;
+            }
+        }
+
+        /* mobile dropdown trial */
+        li:nth-of-type(1) .button {
+            background: #FE8176;
+        }
+        li:nth-of-type(2) .button {
+            background: #F78F68;
+        }
+        li:nth-of-type(3) .button {
+            background: #F1A05A;
+        }
+        li:nth-of-type(4) .button {
+            background: #EBB44D;
+        }
+        li:nth-of-type(5) .button {
+            background: #E4CB40;
+        }
+        li:nth-of-type(6) .button {
+            background: #D8DE34;
+        }
+        li:nth-of-type(7) .button {
+            background: #B0D828;
+        }
+        li:nth-of-type(8) .button {
+            background: #86D11D;
+        }
+        li:nth-of-type(9) .button {
+            background: #5BCB13;
+        }
+        li:nth-of-type(10) .button {
+            background: #2FC509;
+        }
+        li:nth-of-type(11) .button {
+            background: #01BF00;
+        }
+
     }
 
 }

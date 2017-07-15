@@ -146,7 +146,7 @@ class Etherep {
             if (typeof web3 == typeof undefined) {
                 console.warn("Attempting to create a connection to default RPC");
                 this.web3 = new Web3(new Web3.providers.HttpProvider(DEFAULT_PROVIDER));
-                this._setReadOnly(false); // CHANGEME
+                this._setReadOnly(true);
             } else {
                 this.web3 = web3;
                 this._setReadOnly(false);

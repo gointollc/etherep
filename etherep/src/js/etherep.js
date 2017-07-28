@@ -430,6 +430,8 @@ class Etherep {
                 if (score >= -5 && score < -1) scoreClass = "bad";
                 else if (score >= -1 && score < 3) scoreClass = "fair";
                 else if (score >= 3) scoreClass = "good";
+                if (score > 5) score = 5;
+                if (score < -5) score = -5;
                 console.log("Score: ", score, " scoreClass: ", scoreClass);
 
                 // Get identicon
@@ -445,6 +447,7 @@ class Etherep {
                 that._render(targetElement, byid('tmplLookupResults').innerHTML, {
                     address: address,
                     score: score,
+                    scoreInt: Math.round(score),
                     count: resp[1],
                     scoreClass: scoreClass,
                     identicon: identData

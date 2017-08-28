@@ -1,6 +1,6 @@
 {
   "name": "etherep",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Ethereum reputation by address",
   "main": "index.js",
   "repository": "https://github.com/gointo/etherep",

@@ -506,9 +506,9 @@ class Etherep {
             // Render loading spinner
             that._render(targetElement, byid('tmplSpinner').innerHTML, {});
             
-            response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 300000 }, function(err, resp) {
+            response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 150000 }, function(err, resp) {
                 console.log('rep.rate callback');
-                console.log(resp);
+                console.debug(resp);
                 if (err) {
                     
                     console.error(err);

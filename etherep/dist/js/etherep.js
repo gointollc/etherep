@@ -535,6 +535,16 @@ var Etherep = function () {
             var that = this;
             this._web3Valid(true).then(function (res) {
 
+                console.debug({
+                    "address": address,
+                    "defaultAccount": that.web3.eth.defaultAccount,
+                    "accounts": that.web3.eth.accounts
+                });
+                if (address.toLowerCase() === that.web3.eth.defaultAccount.toLowerCase() || that.web3.eth.accounts.includes(address.toLowerCase())) {
+                    console.error("Invalid address.  You may not rate yourself.");
+                    return;
+                }
+
                 var rep = that.web3.eth.contract(ETHEREP_ABI).at(that.address);
 
                 // Get the target element and show loading effect

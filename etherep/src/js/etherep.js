@@ -58,6 +58,18 @@ function selectRating(thisButt, rating) {
 
     }
 
+    // Only do this for desktop
+    var mm = window.matchMedia("(min-width: 1008px)")
+    if (mm.matches) {
+        for (let i = 0; i < butts.length; i++) {
+            if (butts[i] === thisButt) {
+                butts[i].classList.add('marker');
+            } else {
+                butts[i].classList.remove('marker');
+            }
+        }
+    }
+
     byid('rating-value').value = rating;
 
     return false;

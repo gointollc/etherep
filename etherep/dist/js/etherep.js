@@ -10,11 +10,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /// CONSTANTS
 ///
 var STATIC_ROOT = "";
-var DEFAULT_PROVIDER = "https://mainnet.infura.io/FDJajyHvjza2cZK85SZ6";
-var NETWORKS = ["1"];
+var DEFAULT_PROVIDER = "https://ropsten.infura.io/FDJajyHvjza2cZK85SZ6";
+var NETWORKS = ["3", "9999"];
 var ETHEREP_FEE = 200000000000000;
 var ETHEREP_ABI = [{ "constant": false, "inputs": [{ "name": "d", "type": "bool" }], "name": "setDebug", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "newFee", "type": "uint256" }], "name": "setFee", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "drain", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "who", "type": "address" }], "name": "getScoreAndCount", "outputs": [{ "name": "score", "type": "int256" }, { "name": "ratings", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getDelay", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getFee", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "who", "type": "address" }], "name": "setManager", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getDebug", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "who", "type": "address" }], "name": "getScore", "outputs": [{ "name": "score", "type": "int256" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getManager", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "_delay", "type": "uint256" }], "name": "setDelay", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "who", "type": "address" }, { "name": "rating", "type": "int256" }], "name": "rate", "outputs": [], "payable": true, "type": "function" }, { "inputs": [{ "name": "_manager", "type": "address" }, { "name": "_fee", "type": "uint256" }, { "name": "_storageAddress", "type": "address" }, { "name": "_wait", "type": "uint256" }], "payable": false, "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "sender", "type": "address" }, { "indexed": false, "name": "message", "type": "string" }], "name": "Error", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "message", "type": "string" }], "name": "Debug", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "message", "type": "int256" }], "name": "DebugInt", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "message", "type": "uint256" }], "name": "DebugUint", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "who", "type": "address" }, { "indexed": false, "name": "rating", "type": "int256" }], "name": "Rating", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "f", "type": "uint256" }], "name": "FeeChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "d", "type": "uint256" }], "name": "DelayChanged", "type": "event" }];
-var MIGRATION_ADDR = "0xf302e819f3b6e3c1dd869ffdc3cf82646ccd4748";
+var MIGRATION_ADDR = "0x59e5d8554962267c0ef7f657844312be5ed3ab0a";
 var MIGRATION_ABI = [{ "constant": true, "inputs": [{ "name": "who", "type": "address" }], "name": "getPermissions", "outputs": [{ "name": "", "type": "bool" }, { "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adminAddress", "type": "address" }], "name": "removeAdmin", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "manAddress", "type": "address" }], "name": "addManager", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "key", "type": "string" }], "name": "getContract", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "key", "type": "string" }, { "name": "contractAddress", "type": "address" }], "name": "setContract", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "adminAddress", "type": "address" }], "name": "addAdmin", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "manAddress", "type": "address" }], "name": "removeManager", "outputs": [], "payable": false, "type": "function" }, { "inputs": [{ "name": "originalAdmin", "type": "address" }], "payable": false, "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "key", "type": "string" }, { "indexed": false, "name": "contractAddress", "type": "address" }], "name": "EventSetContract", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "admin", "type": "address" }], "name": "EventAddAdmin", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "admin", "type": "address" }], "name": "EventRemoveAdmin", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "manager", "type": "address" }], "name": "EventAddManager", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "by", "type": "address" }, { "indexed": false, "name": "manager", "type": "address" }], "name": "EventRemoveManager", "type": "event" }];
 
 // Approximate gas to rate
@@ -61,6 +61,18 @@ function selectRating(thisButt, rating) {
         byid('rating-list').classList.add('collapsed');
     }
 
+    // Only do this for desktop
+    var mm = window.matchMedia("(min-width: 1008px)");
+    if (mm.matches) {
+        for (var _i2 = 0; _i2 < butts.length; _i2++) {
+            if (butts[_i2] === thisButt) {
+                butts[_i2].classList.add('marker');
+            } else {
+                butts[_i2].classList.remove('marker');
+            }
+        }
+    }
+
     byid('rating-value').value = rating;
 
     return false;
@@ -88,8 +100,8 @@ function toggleRatingList() {
         }
     }
 
-    for (var _i2 = 0; _i2 < butts.length; _i2++) {
-        butts[_i2].classList.remove('mobi-show');
+    for (var _i3 = 0; _i3 < butts.length; _i3++) {
+        butts[_i3].classList.remove('mobi-show');
     }
 }
 
@@ -530,9 +542,9 @@ var Etherep = function () {
                 // Render loading spinner
                 that._render(targetElement, byid('tmplSpinner').innerHTML, {});
 
-                response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 300000 }, function (err, resp) {
+                response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 150000 }, function (err, resp) {
                     console.log('rep.rate callback');
-                    console.log(resp);
+                    console.debug(resp);
                     if (err) {
 
                         console.error(err);

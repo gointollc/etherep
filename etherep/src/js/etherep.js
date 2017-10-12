@@ -2,9 +2,10 @@
 /// CONSTANTS
 ///
 const STATIC_ROOT = "";
-const DEFAULT_PROVIDER = "https://mainnet.infura.io/FDJajyHvjza2cZK85SZ6";
+const DEFAULT_PROVIDER = "https://infura.io/FDJajyHvjza2cZK85SZ6";
 const NETWORKS = ["1"];
 const ETHEREP_FEE = 200000000000000;
+const ETHEREP_DELAY = 300;
 const ETHEREP_ABI = [{"constant":false,"inputs":[{"name":"d","type":"bool"}],"name":"setDebug","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newFee","type":"uint256"}],"name":"setFee","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"drain","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"getScoreAndCount","outputs":[{"name":"score","type":"int256"},{"name":"ratings","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getDelay","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"who","type":"address"}],"name":"setManager","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getDebug","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"getScore","outputs":[{"name":"score","type":"int256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getManager","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_delay","type":"uint256"}],"name":"setDelay","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"who","type":"address"},{"name":"rating","type":"int256"}],"name":"rate","outputs":[],"payable":true,"type":"function"},{"inputs":[{"name":"_manager","type":"address"},{"name":"_fee","type":"uint256"},{"name":"_storageAddress","type":"address"},{"name":"_wait","type":"uint256"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"sender","type":"address"},{"indexed":false,"name":"message","type":"string"}],"name":"Error","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"message","type":"string"}],"name":"Debug","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"message","type":"int256"}],"name":"DebugInt","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"message","type":"uint256"}],"name":"DebugUint","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"who","type":"address"},{"indexed":false,"name":"rating","type":"int256"}],"name":"Rating","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"f","type":"uint256"}],"name":"FeeChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"d","type":"uint256"}],"name":"DelayChanged","type":"event"}];
 const MIGRATION_ADDR = "0xf302e819f3b6e3c1dd869ffdc3cf82646ccd4748";
 const MIGRATION_ABI = [{"constant":true,"inputs":[{"name":"who","type":"address"}],"name":"getPermissions","outputs":[{"name":"","type":"bool"},{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"removeAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"addManager","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"key","type":"string"}],"name":"getContract","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"key","type":"string"},{"name":"contractAddress","type":"address"}],"name":"setContract","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"adminAddress","type":"address"}],"name":"addAdmin","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"manAddress","type":"address"}],"name":"removeManager","outputs":[],"payable":false,"type":"function"},{"inputs":[{"name":"originalAdmin","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"key","type":"string"},{"indexed":false,"name":"contractAddress","type":"address"}],"name":"EventSetContract","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventAddAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"admin","type":"address"}],"name":"EventRemoveAdmin","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventAddManager","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"manager","type":"address"}],"name":"EventRemoveManager","type":"event"}];
@@ -56,6 +57,18 @@ function selectRating(thisButt, rating) {
         // Add the collapsed class
         byid('rating-list').classList.add('collapsed');
 
+    }
+
+    // Only do this for desktop
+    var mm = window.matchMedia("(min-width: 1008px)")
+    if (mm.matches) {
+        for (let i = 0; i < butts.length; i++) {
+            if (butts[i] === thisButt) {
+                butts[i].classList.add('marker');
+            } else {
+                butts[i].classList.remove('marker');
+            }
+        }
     }
 
     byid('rating-value').value = rating;
@@ -136,7 +149,7 @@ class Etherep {
             console.error("page is unavailable, this app will not work properly!");
         }*/
 
-        this._renderMain(byid('tmplMain').innerHTML, { fee: ETHEREP_FEE / 1000000000000000000 });
+        this._renderMain(byid('tmplMain').innerHTML, { fee: ETHEREP_FEE / 1000000000000000000, delayMinutes: ETHEREP_DELAY / 60});
 
         // TBD later
         this.readOnly = false;
@@ -366,6 +379,44 @@ class Etherep {
     }
 
     /**
+     * Show rating error 
+     * @param {string} msg - The error message
+     */
+    _showRatingError(msg) {
+
+        let targetElement = byid('rating-errors');
+        let resultsElement = byid('rating-results');
+
+        // Render the error
+        this._render(targetElement, byid('tmplRatingErrors').innerHTML, { "errorMessage": msg });
+
+        // Show the errors
+        targetElement.classList.remove('hide');
+
+        // Hide any previous results
+        resultsElement.classList.add('hide');
+
+    }
+
+    /** 
+     * Set a variable for storage
+     * @param {string} key
+     * @param {} val
+     */
+    _store(key, val) {
+        return localStorage.setItem(key, val);
+    }
+
+    /** 
+     * Get a variable from storage
+     * @param {string} key
+     * @param {} val
+     */
+    _get(key) {
+        return localStorage.getItem(key);
+    }
+
+    /**
      * Close all modals
      */
     closeModals() {
@@ -484,19 +535,39 @@ class Etherep {
 
         // Sanity checks
         // TODO: give feedback to user
+        console.log("rating");
+        console.debug(rating);
+        if (typeof rating == 'undefined') {
+            this._showRatingError("You must select a rating value");
+            return;
+        }
         if (rating < -5 || rating > 5) {
-            console.error("Rating out of bounds");
+            this._showRatingError("Rating out of bounds");
             return;
         }
         if (!StringValidator.isAddress(address)) {
-            console.error("Invalid address");
+            this._showRatingError("Invalid address");
             return;
         }
+        if (this._get('lastRating') && (new Date() - new Date(this._get('lastRating'))) / 1000 < ETHEREP_DELAY) {
+            this._showRatingError("You are rating too often.")
+            return;
+        }
+
+        // Make sure the errors are hidden
+        let errorsElement = byid('rating-errors');
+        if (!errorsElement.classList.contains('hide')) errorsElement.classList.add('hide');
 
         var response;
 
         var that = this;
         this._web3Valid(true).then(function(res) {
+
+            if (address.toLowerCase() === that.web3.eth.defaultAccount.toLowerCase() 
+                || that.web3.eth.accounts.includes(address.toLowerCase())) {
+                that._showRatingError("Invalid address.  You may not rate yourself.")
+                return;
+            }
             
             let rep = that.web3.eth.contract(ETHEREP_ABI).at(that.address);
 
@@ -506,9 +577,9 @@ class Etherep {
             // Render loading spinner
             that._render(targetElement, byid('tmplSpinner').innerHTML, {});
             
-            response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 300000 }, function(err, resp) {
+            response = rep.rate(address, rating, { value: ETHEREP_FEE, gas: 150000 }, function(err, resp) {
                 console.log('rep.rate callback');
-                console.log(resp);
+                console.debug(resp);
                 if (err) {
                     
                     console.error(err);
@@ -530,6 +601,9 @@ class Etherep {
                         transaction: resp,
                         etherscanLink: etherscanLink
                     });
+
+                    // Store this for later reference
+                    that._store("lastRating", (new Date()).toString());
 
                 }
 

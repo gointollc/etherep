@@ -13,11 +13,13 @@
         <header class="hero">
             <div class="hero-body">
                 <div class="container">
-                    <h1 class="title">
-                        etherep
-                        <div class="scale"><img src="images/scale.svg"></div>
-                    </h1>
-                    <h2 class="subtitle">Simple Ethereum reputation by address</h2>
+                    <a href="https://etherep.com">
+                        <h1 class="title">
+                            etherep
+                            <div class="scale"><img src="images/scale.svg"></div>
+                        </h1>
+                        <h2 class="subtitle">Simple Ethereum reputation by address</h2>
+                    </a>
                 </div>
             </div>
         </header>
@@ -126,7 +128,7 @@
                                 <button class="button is-warning rating-button" onclick="selectRating(this, -1)">-1</button>
                             </li>
                             <li class="control show">
-                                <button class="button is-info rating-button" onclick="selectRating(this, 0)">0</button>
+                                <button class="button is-info rating-button marker" onclick="selectRating(this, 0)">0</button>
                             </li>
                             <li class="control">
                                 <button class="button is-warning rating-button" onclick="selectRating(this, 1)">1</button>
@@ -152,8 +154,9 @@
                     </div>
 
                     <p id="rating-results" class="hide"></p>
+                    <p id="rating-errors" class="hide"></p>
 
-                    <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup></p>
+                    <p class="help">This will charge a fee of &Xi;{{ fee }}.<sup><a href="#" onclick="etherep.showWhyFee(); return false;">Why?</a></sup>  You may not rate yourself. Ratings are be limited to once every {{ delayMinutes }} minutes.</p>
                 </div>
             </section>
 
@@ -202,6 +205,11 @@
             <article class="message">
                 <p class="message-body">Rating of <span class="score {{ scoreClass }}">{{ score }}</span> has been submitted for {{ address }}.</p>
                 <p class="small">Transaction: <a href="{{ etherscanLink }}" onclick="window.open(this.href); return false;">{{ transaction }}</a></p>
+            </article>
+        </script>
+        <script id="tmplRatingErrors" type="text/html">
+            <article class="errors">
+                <p class="message">{{ errorMessage }}</p>
             </article>
         </script>
         <script>

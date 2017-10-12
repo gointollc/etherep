@@ -9,6 +9,7 @@ $code-background:       #FDE7D0;
 $link:                  $primary-color;
 $link-invert:           #966FF7;
 $link-visited:          #6F8CF7;
+$button-info:           #2366d1;
 
 $good:                  #23d160;
 $fair:                  #D8DE34;
@@ -198,6 +199,15 @@ pre {
     }
 }
 
+#rating-errors {
+    .errors {
+        .message {
+            padding: 1rem 1.25em;
+            color: $secondary-color;
+        }
+    }
+}
+
 .hide, .ro {
     display: none;
 }
@@ -328,6 +338,10 @@ pre {
             li, li button {
                 display: inline-block;
                 margin-right: -2px;
+            }
+            li button.marker {
+                border: 1px $button-info solid;
+                color: $button-info;
             }
         }
 

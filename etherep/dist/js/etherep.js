@@ -422,6 +422,30 @@ var Etherep = function () {
             resultsElement.classList.add('hide');
         }
 
+        /** 
+         * Set a variable for storage
+         * @param {string} key
+         * @param {} val
+         */
+
+    }, {
+        key: "_store",
+        value: function _store(key, val) {
+            return localStorage.setItem(key, val);
+        }
+
+        /** 
+         * Get a variable from storage
+         * @param {string} key
+         * @param {} val
+         */
+
+    }, {
+        key: "_get",
+        value: function _get(key) {
+            return localStorage.getItem(key);
+        }
+
         /**
          * Close all modals
          */
@@ -557,6 +581,10 @@ var Etherep = function () {
                 this._showRatingError("Invalid address");
                 return;
             }
+            if (this._get('lastRating') && (new Date() - new Date(this._get('lastRating'))) / 1000 < ETHEREP_DELAY) {
+                this._showRatingError("You are rating too often.");
+                return;
+            }
 
             // Make sure the errors are hidden
             var errorsElement = byid('rating-errors');
@@ -603,6 +631,9 @@ var Etherep = function () {
                             transaction: resp,
                             etherscanLink: etherscanLink
                         });
+
+                        // Store this for later reference
+                        that._store("lastRating", new Date().toString());
                     }
                 });
             });

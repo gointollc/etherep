@@ -398,6 +398,24 @@ class Etherep {
 
     }
 
+    /** 
+     * Set a variable for storage
+     * @param {string} key
+     * @param {} val
+     */
+    _store(key, val) {
+        return localStorage.setItem(key, val);
+    }
+
+    /** 
+     * Get a variable from storage
+     * @param {string} key
+     * @param {} val
+     */
+    _get(key) {
+        return localStorage.getItem(key);
+    }
+
     /**
      * Close all modals
      */
@@ -531,6 +549,10 @@ class Etherep {
             this._showRatingError("Invalid address");
             return;
         }
+        if (this._get('lastRating') && (new Date() - new Date(this._get('lastRating'))) / 1000 < ETHEREP_DELAY) {
+            this._showRatingError("You are rating too often.")
+            return;
+        }
 
         // Make sure the errors are hidden
         let errorsElement = byid('rating-errors');
@@ -579,6 +601,9 @@ class Etherep {
                         transaction: resp,
                         etherscanLink: etherscanLink
                     });
+
+                    // Store this for later reference
+                    that._store("lastRating", (new Date()).toString());
 
                 }
 

@@ -199,6 +199,15 @@ pre {
     }
 }
 
+#rating-errors {
+    .errors {
+        .message {
+            padding: 1rem 1.25em;
+            color: $secondary-color;
+        }
+    }
+}
+
 .hide, .ro {
     display: none;
 }

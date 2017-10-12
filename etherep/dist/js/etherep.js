@@ -401,6 +401,28 @@ var Etherep = function () {
         }
 
         /**
+         * Show rating error 
+         * @param {string} msg - The error message
+         */
+
+    }, {
+        key: "_showRatingError",
+        value: function _showRatingError(msg) {
+
+            var targetElement = byid('rating-errors');
+            var resultsElement = byid('rating-results');
+
+            // Render the error
+            this._render(targetElement, byid('tmplRatingErrors').innerHTML, { "errorMessage": msg });
+
+            // Show the errors
+            targetElement.classList.remove('hide');
+
+            // Hide any previous results
+            resultsElement.classList.add('hide');
+        }
+
+        /**
          * Close all modals
          */
 
@@ -521,27 +543,32 @@ var Etherep = function () {
 
             // Sanity checks
             // TODO: give feedback to user
+            console.log("rating");
+            console.debug(rating);
+            if (typeof rating == 'undefined') {
+                this._showRatingError("You must select a rating value");
+                return;
+            }
             if (rating < -5 || rating > 5) {
-                console.error("Rating out of bounds");
+                this._showRatingError("Rating out of bounds");
                 return;
             }
             if (!StringValidator.isAddress(address)) {
-                console.error("Invalid address");
+                this._showRatingError("Invalid address");
                 return;
             }
+
+            // Make sure the errors are hidden
+            var errorsElement = byid('rating-errors');
+            if (!errorsElement.classList.contains('hide')) errorsElement.classList.add('hide');
 
             var response;
 
             var that = this;
             this._web3Valid(true).then(function (res) {
 
-                console.debug({
-                    "address": address,
-                    "defaultAccount": that.web3.eth.defaultAccount,
-                    "accounts": that.web3.eth.accounts
-                });
                 if (address.toLowerCase() === that.web3.eth.defaultAccount.toLowerCase() || that.web3.eth.accounts.includes(address.toLowerCase())) {
-                    console.error("Invalid address.  You may not rate yourself.");
+                    that._showRatingError("Invalid address.  You may not rate yourself.");
                     return;
                 }
 

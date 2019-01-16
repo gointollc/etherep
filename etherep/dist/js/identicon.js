@@ -1,11 +1,11 @@
 /**
- * Identicon.js 2.3.1
+ * Identicon.js 2.3.3
  * http://github.com/stewartlord/identicon.js
  *
  * PNGLib required for PNG output
  * http://www.xarg.org/download/pnglib.js
  *
- * Copyright 2017, Stewart Lord
+ * Copyright 2018, Stewart Lord
  * Released under the BSD license
  * http://www.opensource.org/licenses/bsd-license.php
  */
@@ -187,7 +187,13 @@
         },
 
         getBase64: function(){
-            return btoa(this.getDump());
+            if ('function' === typeof btoa) {
+                return btoa(this.getDump());
+            } else if (Buffer) {
+                return new Buffer(this.getDump(), 'binary').toString('base64');
+            } else {
+                throw 'Cannot generate base64 output';
+            }
         }
     };
 
